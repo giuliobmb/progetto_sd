@@ -1,6 +1,7 @@
 package it.unimib.sd2025;
 
 import java.net.*;
+import java.security.KeyStore.Entry;
 import java.io.*;
 import java.util.*;
 
@@ -68,6 +69,16 @@ public class Database{
         return schemi.get(nomeSchema).get(key);
     }
 
+    public synchronized String getAll(String nomeSchema){
+        if(schemi.get(nomeSchema) == null){
+            return null;
+        }
+        String values = "";
+        for (Map.Entry<String,String> entry : schemi.get(nomeSchema).entrySet()) {
+            values += entry.getKey() + " " + entry.getValue() + ",";
+        }
+        return values;
+    }
     
 
 }

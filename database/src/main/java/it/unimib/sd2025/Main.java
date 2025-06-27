@@ -85,6 +85,13 @@ public class Main {
                             else
                                 out.println("ERROR");
                             break;
+                        case "GETALL":
+                            String values = db.getAll(command[1]);
+                            if(values != null)
+                                out.println("VALUE " + values);
+                            else
+                                out.println("ERROR");
+                            break;
                     }
                 }
 
