@@ -85,6 +85,7 @@ public class Main {
                             else
                                 out.println("ERROR");
                             break;
+                    }
                 }
 
                 in.close();
