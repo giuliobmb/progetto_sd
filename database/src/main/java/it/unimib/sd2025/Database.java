@@ -50,7 +50,7 @@ public class Database{
         return INSTANCE;
     }
 
-    public synchronized Database removePair(String nomeSchema, String key, String value){
+    public synchronized Database removePair(String nomeSchema, String key){
         if(schemi.get(nomeSchema) == null){
             return null;
         }
