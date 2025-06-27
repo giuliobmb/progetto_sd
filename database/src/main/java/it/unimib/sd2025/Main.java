@@ -58,32 +58,40 @@ public class Main {
                     String[] command = inputLine.split(" ");
                     switch(command[0]){
                         case "ADDSCHEMA":
-                            db.addSchema(command[1]);
+                            if(db.addSchema(command[1]) != null)
+                                out.println("OK");
+                            else
+                                out.println("ERROR");
+                            out.println("OK");
                             break;
                         case "ADDPAIR":
                             if(db.addPair(command[1], command[2], command[3]) != null)
                                 out.println("OK");
                             else
                                 out.println("ERROR");
+                            out.println("OK");
                             break;
                         case "UPDATEPAIR":
                             if(db.updatePair(command[1], command[2], command[3]) != null)
                                 out.println("OK");
                             else
                                 out.println("ERROR");
+                            out.println("OK");
                             break;
                         case "REMOVEPAIR":
                             if(db.removePair(command[1], command[2]) != null)
                                 out.println("OK");
                             else
                                 out.println("ERROR");
-                            break;                    
+                            out.println("OK");
+                                break;                    
                         case "GETVALUE":
                             String value = db.getValue(command[1], command[2]);
                             if(value != null)
                                 out.println("VALUE " + value);
                             else
                                 out.println("ERROR");
+                            out.println("OK");
                             break;
                         case "GETALL":
                             String values = db.getAll(command[1]);
@@ -91,6 +99,7 @@ public class Main {
                                 out.println("VALUE " + values);
                             else
                                 out.println("ERROR");
+                            out.println("OK");
                             break;
                     }
                 }
