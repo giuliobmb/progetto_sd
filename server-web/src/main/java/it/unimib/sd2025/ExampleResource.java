@@ -40,6 +40,6 @@ public class ExampleResource {
     public Integer getKeyboards() {
         // Aprire qui una socket verso il database, fare il comando per ottenere la risposta.
         // ...
-        return 42;
+        return 180;
     }
 }

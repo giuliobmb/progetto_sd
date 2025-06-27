@@ -42,17 +42,49 @@ public class Main {
 
         public void run() {
             try {
+                Database db = Database.get();
+
                 var out = new PrintWriter(client.getOutputStream(), true);
                 var in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
                 String inputLine;
 
                 while ((inputLine = in.readLine()) != null) {
-                    if (".".equals(inputLine)) {
-                        out.println("bye");
+                    if ("END".equals(inputLine)) {
+                        out.println("OK");
                         break;
                     }
-                    out.println(inputLine);
+                    
+                    String[] command = inputLine.split(" ");
+                    switch(command[0]){
+                        case "ADDSCHEMA":
+                            db.addSchema(command[1]);
+                            break;
+                        case "ADDPAIR":
+                            if(db.addPair(command[1], command[2], command[3]) != null)
+                                out.println("OK");
+                            else
+                                out.println("ERROR");
+                            break;
+                        case "UPDATEPAIR":
+                            if(db.updatePair(command[1], command[2], command[3]) != null)
+                                out.println("OK");
+                            else
+                                out.println("ERROR");
+                            break;
+                        case "REMOVEPAIR":
+                            if(db.removePair(command[1], command[2]) != null)
+                                out.println("OK");
+                            else
+                                out.println("ERROR");
+                            break;                    
+                        case "GETVALUE":
+                            String value = db.getValue(command[1], command[2]);
+                            if(value != null)
+                                out.println("VALUE " + value);
+                            else
+                                out.println("ERROR");
+                            break;
                 }
 
                 in.close();
