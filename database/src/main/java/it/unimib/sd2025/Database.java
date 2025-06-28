@@ -75,7 +75,7 @@ public class Database{
         }
         String values = "";
         for (Map.Entry<String,String> entry : schemi.get(nomeSchema).entrySet()) {
-            values += entry.getKey() + " " + entry.getValue() + ",";
+            values += entry.getKey() + " " + entry.getValue() + ";";
         }
         return values;
     }
