@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Homepage</title>
+</head>
+<body>
+  <h2>Benvenuto</h2>
+  <p>Inserisci il tuo codice fiscale:</p>
+
+  <input type="text" id="cfInput" placeholder="Codice Fiscale" />
+  <button onclick="goToIndex()">Accedi</button>
+
+  <script>
+    function goToIndex() {
+      const cf = document.getElementById("cfInput").value.trim();
+      if (cf.length === 0) {
+        alert("Inserisci un codice fiscale valido.");
+        return;
+      }
+      localStorage.setItem("codiceFiscale", cf); // salva in memoria
+      window.location.href = "index.html";       // vai alla pagina index
+    }
+  </script>
+</body>
+</html>
