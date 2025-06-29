@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.Buffer;
+import java.util.HashMap;
 
 public class DatabaseClient implements DatabaseClientInterface{
 
@@ -24,22 +25,19 @@ public class DatabaseClient implements DatabaseClientInterface{
             out = new PrintWriter(client.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
+            out.println("ADDSCHEMA " + schemaName);
+
             String inputLine;
 
             while ((inputLine = in.readLine()) != null) {
-                if ("OKEND".equals(inputLine)) {
-                    out.println("OKEND");
-                    break;
-                }
                 String[] response = inputLine.split(" ");
                 switch(response[0]){
                     case "OK":
                         out.println("END");
                         break;
                     case "OKEND":
-                        this.closeConnection();
+                        break;
                 }
-
             }
 
             in.close();
@@ -52,32 +50,175 @@ public class DatabaseClient implements DatabaseClientInterface{
 
     @Override
     public void addPair(String schemaName, String key, String value) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addPair'");
+        PrintWriter out;
+        BufferedReader in;
+        try {
+            out = new PrintWriter(client.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+
+            out.println("ADDPAIR " + schemaName + " " + key + " " + value);
+
+            String inputLine;
+
+            while ((inputLine = in.readLine()) != null) {
+                String[] response = inputLine.split(" ");
+                switch(response[0]){
+                    case "OK":
+                        out.println("END");
+                        break;
+                    case "OKEND":
+                        break;
+                }
+            }
+
+            in.close();
+            out.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void removePair(String schemaName, String key) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'removePair'");
+        PrintWriter out;
+        BufferedReader in;
+        try {
+            out = new PrintWriter(client.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+
+            out.println("REMOVEPAIR " + schemaName + " " + key);
+
+            String inputLine;
+
+            while ((inputLine = in.readLine()) != null) {
+                String[] response = inputLine.split(" ");
+                switch(response[0]){
+                    case "OK":
+                        out.println("END");
+                        break;
+                    case "OKEND":
+                        break;
+                }
+            }
+
+            in.close();
+            out.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void updatePair(String schemaName, String key, String value) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updatePair'");
+        PrintWriter out;
+        BufferedReader in;
+        try {
+            out = new PrintWriter(client.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+
+            out.println("UPDATEPAIR " + schemaName + " " + key + " " + value);
+
+            String inputLine;
+
+            while ((inputLine = in.readLine()) != null) {
+                String[] response = inputLine.split(" ");
+                switch(response[0]){
+                    case "OK":
+                        out.println("END");
+                        break;
+                    case "OKEND":
+                        break;
+                }
+            }
+
+            in.close();
+            out.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
     }
 
     @Override
-    public void getValue(String schemaName, String key) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getValue'");
+    public String getValue(String schemaName, String key) {
+        PrintWriter out;
+        BufferedReader in;
+        String value = null;
+        try {
+            out = new PrintWriter(client.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+
+            out.println("GETVALUE " + schemaName + " " + key);
+
+            String inputLine;
+
+            while ((inputLine = in.readLine()) != null) {
+                String[] response = inputLine.split(" ");
+                switch(response[0]){
+                    case "VALUE":
+                        value = response[1];
+                        out.println("END");
+                        break;
+                    case "ERROR":
+                        value = null;
+                        out.println("END");
+                        break;
+                    case "OKEND":
+                        break;
+                }
+            }
+
+            in.close();
+            out.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return value;
     }
 
     @Override
-    public void getAll(String schemaName) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAll'");
+    public HashMap<String,String> getAll(String schemaName) {
+        PrintWriter out;
+        BufferedReader in;
+        HashMap<String, String> values = new HashMap<>();
+        try {
+            out = new PrintWriter(client.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+
+            out.println("GETALL " + schemaName);
+
+            String inputLine;
+            String response  = "";
+
+            while ((inputLine = in.readLine()) != null) {
+                if (inputLine.equals("ERROR")) {
+                    return null;
+                } else if (inputLine.equals("OKEND")) {
+                    break;
+                } else {
+                    response = inputLine;
+                }
+            }
+
+            String[] responses = response.split(";");
+
+            for (String pair : responses) {
+                String[] keyValue = pair.split(" ");
+                if (keyValue.length == 2) {
+                    values.put(keyValue[0], keyValue[1]);
+                }
+            }
+
+            in.close();
+            out.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return values;
     }
     
     public void closeConnection(){

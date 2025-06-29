@@ -1,5 +1,7 @@
 package it.unimib.sd2025.DatabaseClient;
 
+import java.util.HashMap;
+
 public interface DatabaseClientInterface {
 
     int PORTA = 3030;
@@ -12,8 +14,8 @@ public interface DatabaseClientInterface {
 
     public void updatePair(String schemaName, String key, String value);
 
-    public void getValue(String schemaName, String key);
+    public String getValue(String schemaName, String key);
 
-    public void getAll(String schemaName);
+    public HashMap<String,String> getAll(String schemaName);
     
 } 
