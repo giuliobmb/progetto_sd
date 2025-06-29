@@ -106,7 +106,7 @@ public class Main {
                         case "GETALL":
                             String values = db.getAll(command[1]);
                             if(values != null)
-                                out.println("VALUE " + values);
+                                out.println(values);
                             else
                                 out.println("ERROR");
                             break;
