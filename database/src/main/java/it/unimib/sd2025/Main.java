@@ -77,28 +77,24 @@ public class Main {
                                 out.println("OK");
                             else
                                 out.println("ERROR");
-                            out.println("OKEND");
                             break;
                         case "ADDPAIR":
                             if(db.addPair(command[1], command[2], command[3]) != null)
-                                out.println("OKEND");
+                                out.println("OK");
                             else
                                 out.println("ERROR");
-                            out.println("OKEND");
                             break;
                         case "UPDATEPAIR":
                             if(db.updatePair(command[1], command[2], command[3]) != null)
-                                out.println("OKEND");
+                                out.println("OK");
                             else
                                 out.println("ERROR");
-                            out.println("OKEND");
                             break;
                         case "REMOVEPAIR":
                             if(db.removePair(command[1], command[2]) != null)
-                                out.println("OKEND");
+                                out.println("OK");
                             else
                                 out.println("ERROR");
-                            out.println("OKEND");
                                 break;                    
                         case "GETVALUE":
                             String value = db.getValue(command[1], command[2]);
@@ -106,7 +102,6 @@ public class Main {
                                 out.println("VALUE " + value);
                             else
                                 out.println("ERROR");
-                            out.println("OKEND");
                             break;
                         case "GETALL":
                             String values = db.getAll(command[1]);
@@ -114,7 +109,6 @@ public class Main {
                                 out.println("VALUE " + values);
                             else
                                 out.println("ERROR");
-                            out.println("OKEND");
                             break;
                         default:
                             out.println("ERROR");
