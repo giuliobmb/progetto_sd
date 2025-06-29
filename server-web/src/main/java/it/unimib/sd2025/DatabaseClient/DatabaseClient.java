@@ -14,11 +14,18 @@ public class DatabaseClient implements DatabaseClientInterface{
     private Socket client;
 
     public DatabaseClient() throws UnknownHostException, IOException{
-        client = new Socket("localhost", PORTA);      
+            
     }
 
     @Override
     public void addSchema(String schemaName) {
+        if (client == null || client.isClosed()) {
+            try {
+                client = new Socket("localhost", 3030);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         PrintWriter out;
         BufferedReader in;
         try {
@@ -33,6 +40,9 @@ public class DatabaseClient implements DatabaseClientInterface{
                 String[] response = inputLine.split(" ");
                 switch(response[0]){
                     case "OK":
+                        out.println("END");
+                        break;
+                    case "ERROR":
                         out.println("END");
                         break;
                     case "OKEND":
@@ -50,6 +60,13 @@ public class DatabaseClient implements DatabaseClientInterface{
 
     @Override
     public void addPair(String schemaName, String key, String value) {
+        if (client == null || client.isClosed()) {
+            try {
+                client = new Socket("localhost", 3030);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         PrintWriter out;
         BufferedReader in;
         try {
@@ -64,6 +81,9 @@ public class DatabaseClient implements DatabaseClientInterface{
                 String[] response = inputLine.split(" ");
                 switch(response[0]){
                     case "OK":
+                        out.println("END");
+                        break;
+                    case "ERROR":
                         out.println("END");
                         break;
                     case "OKEND":
@@ -81,6 +101,13 @@ public class DatabaseClient implements DatabaseClientInterface{
 
     @Override
     public void removePair(String schemaName, String key) {
+        if (client == null || client.isClosed()) {
+            try {
+                client = new Socket("localhost", 3030);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         PrintWriter out;
         BufferedReader in;
         try {
@@ -95,6 +122,9 @@ public class DatabaseClient implements DatabaseClientInterface{
                 String[] response = inputLine.split(" ");
                 switch(response[0]){
                     case "OK":
+                        out.println("END");
+                        break;
+                    case "ERROR":
                         out.println("END");
                         break;
                     case "OKEND":
@@ -112,6 +142,13 @@ public class DatabaseClient implements DatabaseClientInterface{
 
     @Override
     public void updatePair(String schemaName, String key, String value) {
+        if (client == null || client.isClosed()) {
+            try {
+                client = new Socket("localhost", 3030);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         PrintWriter out;
         BufferedReader in;
         try {
@@ -128,6 +165,9 @@ public class DatabaseClient implements DatabaseClientInterface{
                     case "OK":
                         out.println("END");
                         break;
+                    case "ERROR":
+                        out.println("END");
+                        break;
                     case "OKEND":
                         break;
                 }
@@ -138,10 +178,18 @@ public class DatabaseClient implements DatabaseClientInterface{
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
     }
 
     @Override
     public String getValue(String schemaName, String key) {
+        if (client == null || client.isClosed()) {
+            try {
+                client = new Socket("localhost", 3030);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         PrintWriter out;
         BufferedReader in;
         String value = null;
@@ -181,6 +229,13 @@ public class DatabaseClient implements DatabaseClientInterface{
 
     @Override
     public HashMap<String,String> getAll(String schemaName) {
+        if (client == null || client.isClosed()) {
+            try {
+                client = new Socket("localhost", 3030);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         PrintWriter out;
         BufferedReader in;
         HashMap<String, String> values = new HashMap<>();
@@ -200,6 +255,8 @@ public class DatabaseClient implements DatabaseClientInterface{
                     break;
                 } else {
                     response = inputLine;
+                    out.println("END");
+                    break;
                 }
             }
 

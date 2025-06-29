@@ -65,50 +65,75 @@ public class Main {
                 String inputLine;
 
                 while ((inputLine = in.readLine()) != null) {
+                    System.out.println("Received command: " + inputLine);
                     if ("END".equals(inputLine)) {
                         out.println("OKEND");
+                        System.out.println("Sent command: OKEND");
                         break;
                     }
                     
                     String[] command = inputLine.split(" ");
                     switch(command[0]){
                         case "ADDSCHEMA":
-                            if(db.addSchema(command[1]) != null)
+                            if(db.addSchema(command[1]) != null){
                                 out.println("OK");
-                            else
+                                System.out.println("Sent command: OK");
+                            }else{
                                 out.println("ERROR");
+                                System.out.println("Sent command: ERROR");
+                            }
+                                
                             break;
                         case "ADDPAIR":
-                            if(db.addPair(command[1], command[2], command[3]) != null)
+                            if(db.addPair(command[1], command[2], command[3]) != null){
                                 out.println("OK");
-                            else
+                                System.out.println("Sent command: OK");
+                            }else{
                                 out.println("ERROR");
+                                System.out.println("Sent command: ERROR");
+                            }
+                                
                             break;
                         case "UPDATEPAIR":
-                            if(db.updatePair(command[1], command[2], command[3]) != null)
+                            if(db.updatePair(command[1], command[2], command[3]) != null){
                                 out.println("OK");
-                            else
+                                System.out.println("Sent command: OK");
+                            }
+                            else{
                                 out.println("ERROR");
+                                System.out.println("Sent command: ERROR");
+                            }
+                                
                             break;
                         case "REMOVEPAIR":
-                            if(db.removePair(command[1], command[2]) != null)
+                            if(db.removePair(command[1], command[2]) != null){
                                 out.println("OK");
-                            else
+                                System.out.println("Sent command: OK");
+                            }
+                            else{
                                 out.println("ERROR");
+                                System.out.println("Sent command: ERROR");
+                            }
                                 break;                    
                         case "GETVALUE":
                             String value = db.getValue(command[1], command[2]);
-                            if(value != null)
+                            if(value != null){
                                 out.println("VALUE " + value);
-                            else
+                                System.out.println("Sent command: VALUE " + value);
+                            }else{
                                 out.println("ERROR");
+                                System.out.println("Sent command: ERROR");
+                            }
                             break;
                         case "GETALL":
                             String values = db.getAll(command[1]);
-                            if(values != null)
+                            if(values != null){
                                 out.println(values);
-                            else
+                                System.out.println("Sent command: " + values);
+                            }else{
                                 out.println("ERROR");
+                                System.out.println("Sent command: ERROR");
+                            }
                             break;
                         default:
                             out.println("ERROR");
