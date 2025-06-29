@@ -1,4 +1,4 @@
-package it.unimib.sd2025.DatabaseUtility;
+package it.unimib.sd2025.DatabaseClient;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,16 +8,16 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.Buffer;
 
-public class DatabaseUtility implements DatabaseInterface{
+public class DatabaseClient implements DatabaseClientInterface{
 
     private Socket client;
 
-    public DatabaseUtility() throws UnknownHostException, IOException{
+    public DatabaseClient() throws UnknownHostException, IOException{
         client = new Socket("localhost", PORTA);      
     }
 
     @Override
-    public void addSchema() {
+    public void addSchema(String schemaName) {
         PrintWriter out;
         BufferedReader in;
         try {
@@ -46,37 +46,36 @@ public class DatabaseUtility implements DatabaseInterface{
             out.close();
 
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
     @Override
-    public void addPair() {
+    public void addPair(String schemaName, String key, String value) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'addPair'");
     }
 
     @Override
-    public void removePair() {
+    public void removePair(String schemaName, String key) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'removePair'");
     }
 
     @Override
-    public void updatePair() {
+    public void updatePair(String schemaName, String key, String value) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'updatePair'");
     }
 
     @Override
-    public void getValue() {
+    public void getValue(String schemaName, String key) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getValue'");
     }
 
     @Override
-    public void getAll() {
+    public void getAll(String schemaName) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getAll'");
     }
@@ -85,7 +84,6 @@ public class DatabaseUtility implements DatabaseInterface{
         try {
             client.close();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
