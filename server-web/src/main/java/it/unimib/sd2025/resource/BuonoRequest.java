@@ -101,6 +101,41 @@ public class BuonoRequest {
     }
 
     /**
+     * Modifica la tipologia di un buono
+     *
+     * 
+     */
+    @POST
+    @Path("/modifica/{buonoId}")
+    public Response modificaTipologiaBuono(@PathParam("buonoId") String buonoId, Tipologia nuovaTipologia) {
+        try {
+            // Recupera il buono esistente
+            Buono buono = dbController.getBuonoById(buonoId);
+            if (buono == null) {
+                return Response.status(Response.Status.NOT_FOUND)
+                        .entity("{\"error\":\"Buono non trovato\"}")
+                        .build();
+            }
+
+            // Verifica se il buono è già stato consumato
+            if (buono.isConsumato()) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("{\"error\":\"Non è possibile modificare un buono già consumato\"}")
+                        .build();
+            }   
+            // Aggiorna la tipologia del buono
+            buono.setTipologia(nuovaTipologia);
+            // Salva le modifiche nel database
+            dbController.updateBuono(buono);   
+            return Response.ok(buono).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"error\":\"Errore interno del server\"} " + e.getMessage())
+                    .build();
+        }
+    }   
+            
+    /**
      * Restituisce tutti i buoni di un utente.
      *
      * @param codiceFiscale Codice fiscale dell'utente
