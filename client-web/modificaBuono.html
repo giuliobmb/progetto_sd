@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Gestione Buono</title>
+    </head>
+<body>
+<h2>Modifica Buono</h2>
+<form id="modificaBuonoForm">
+    <p><strong>Nuovo Importo:</strong> <input type="number" id="importo" name="importo" required min="1" step="0.01"></p>
+    <p><strong>Nuova Tipologia:</strong>
+        <select id="tipologia" name="tipologia" required>
+            <option value="">--Seleziona--</option>
+            <option value="cinema">Cinema</option>
+            <option value="musica">Musica</option>
+            <option value="libri">Libri</option>
+            <option value="teatro">Teatro</option>
+            <option value="concerti">Concerti</option>
+            <option value="musei">Musei</option>
+            <option value="strumenti musicali">Strumenti musicali</option>
+            <option value="eventi culturali">Eventi culturali</option>
+        </select>
+    </p>
+    <button type="submit">Salva Modifiche</button>
+
+    <button onclick="window.location.href='dettagliBuono.html'">Torna all'indice</button>
+
+</form>
+    <script>
+// mettere come valori iniziali i dati originali del buono 
+    </script>
+
+    </body>
+    </html>

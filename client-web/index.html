@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Index</title>
+  </head>
+  <body data-server-no-reload>
+    <h2>Carta Cultura</h2>
+    
+    <ul>
+      <li><a href="statoContributo.html">Controlla stato contributo </a></li>
+      <li><a href="cronologia.html">Elenco buoni generati</a></li>
+      <li><a href="generaBuono.html">Genera buono</a></li>
+      <li><a href="registrazioneUtente.html">Registra nuovo utente</a></li>
+      <li><a href="statoSistema.html">Visualizza stato sistema</a></li>
+    </ul>
+    <script>
+      const API_URI = "http://localhost:8080";
+
+      window.onload = init();
+
+      async function init() {
+        const cf = localStorage.getItem("codiceFiscale");
+        if (!cf) {
+          alert("Codice fiscale non trovato");
+          window.location.href = "home.html"; // reindirizza alla home se non c'è}
+      }
+    }
+    
+
+
+    </script>
+  </body>
+
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Stato contributo</title>
+    </head>
+<body>
+    <h2>Area Personale</h2>
+    <p><strong>Contributo disponibile:</strong> <span id="disponibile">-</span> €</p>
+    <p><strong>Contributo assegnato a buoni non spesi:</strong> <span id="assegnato">-</span> €</p>
+    <p><strong>Contributo speso:</strong> <span id="speso">-</span> €</p>
+  </div>
+
+  <button onclick="window.location.href='index.html'">Torna all'indice</button>
+
+    <script>
+         const API_URI = "http://localhost:8080/api";
+        window.onload = init;
+        const cf = localStorage.getItem("codiceFiscale");
+        document.getElementById("userInfo").innerText = `Codice fiscale: ${cf}`;
+        try {
+        const res = await fetch(`${API_URI}/users/${cf}/status`);
+
+        if (!res.ok) {
+          throw new Error("Utente non trovato o errore server");
+        }
+        const data = await res.json();
+        document.getElementById("disponibile").innerText = data.available;
+        document.getElementById("assegnato").innerText = data.assigned;
+        document.getElementById("speso").innerText = data.spent;
+      } catch (error) {
+        alert("Errore nel recupero dei dati. Riprova più tardi.");
+        console.error(error);
+      }
+    </script>
+
+    </body>
+    </html>
