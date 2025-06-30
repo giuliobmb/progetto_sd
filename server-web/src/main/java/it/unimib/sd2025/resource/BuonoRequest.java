@@ -158,64 +158,7 @@ public class BuonoRequest {
         }
     }
 
-    /**
-     * Modifica un buono non ancora consumato.
-     *
-     * @param buonoId ID del buono da modificare
-     * @param buonoModificato Buono con le modifiche
-     * @return Response con il buono modificato
-     */
-    @PUT
-    @Path("/{buonoId}")
-    public Response modificaBuono(@PathParam("buonoId") String buonoId, Buono buonoModificato) {
-        try {
-            Buono buonoEsistente = dbController.getBuonoById(buonoId);
-            if (buonoEsistente == null) {
-                return Response.status(Response.Status.NOT_FOUND)
-                        .entity("{\"error\":\"Buono non trovato\"}")
-                        .build();
-            }
-
-            // Verifica se il buono è già stato consumato
-            if (buonoEsistente.isConsumato()) {
-                return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("{\"error\":\"Non è possibile modificare un buono già consumato\"}")
-                        .build();
-            }
-
-            // Aggiorna solo i campi modificabili (tipologia di bene)
-            buonoEsistente.setTipologia(buonoModificato.getTipologia());
-            // Se l'importo è stato modificato, verifica il contributo disponibile
-            if (buonoModificato.getImporto() > 0) {
-                String contributoStr = dbClient.getValue("utenti", buonoEsistente.getCodiceFiscale());
-                if (contributoStr == null) {
-                    return Response.status(Response.Status.NOT_FOUND)
-                            .entity("{\"error\":\"Utente non trovato\"}")
-                            .build();
-                }
-
-                double contributoDisponibile = Double.parseDouble(contributoStr);
-                if (buonoModificato.getImporto() > contributoDisponibile) {
-                    return Response.status(Response.Status.BAD_REQUEST)
-                            .entity("{\"error\":\"Contributo insufficiente\"}")
-                            .build();
-                }
-                buonoEsistente.setImporto(buonoModificato.getImporto());
-            }
-
-
-            // Salva le modifiche
-            dbController.updateBuono(buonoEsistente);
-
-            return Response.ok(buonoEsistente).build();
-
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{\"error\":\"Errore interno del server\"}")
-                    .build();
-        }
-    }
-
+    
     /**
      * Consuma un buono.
      *
