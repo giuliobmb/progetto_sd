@@ -135,7 +135,7 @@ public class UtenteRequest {
             }            
 
             Map<String, Double> statoContributo = Map.of(
-                    "contributoDisponibile", CONTRIBUTO_INIZIALE - contributoDisponibile,
+                    "contributoDisponibile", CONTRIBUTO_INIZIALE - contributoSpeso,
                     "contributoAssegnato", contributoAssegnato,
                     "contributoSpeso", contributoSpeso,
                     "contributoTotale", CONTRIBUTO_INIZIALE
