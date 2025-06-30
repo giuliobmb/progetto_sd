@@ -40,9 +40,9 @@ public class Main {
 
         // Creazione schema buoni
         db.addSchema("buoni");
-        db.addPair("buoni", "RSSMRA80A01H501U", "20,0");
-        db.addPair("buoni", "VRDLGI85C10Z404Y", "20,1");
-        db.addPair("buoni", "PLLMHL70T41L219P", "50,0");
+        db.addPair("buoni", "RSSMRA80A01H501U", "20");
+        db.addPair("buoni", "VRDLGI85C10Z404Y", "20");
+        db.addPair("buoni", "PLLMHL70T41L219P", "50");
     }
 
     /**
