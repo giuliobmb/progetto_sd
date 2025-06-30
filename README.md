@@ -1,11 +1,17 @@
-# Progetto Sistemi Distribuiti 2024-2025 - NOME GRUPPO
+# Progetto Sistemi Distribuiti 2024-2025 - Quadrifoglio Verde
 
-Lo scheletro espone la struttura che il progetto deve seguire. Al posto di questo paragrafo è necessario scrivere il nome del progetto e una breve descrizione.
+L'applicazione consente la gestione della Carta Cultura Giovani, permettendo a ogni utente registrato di:
+- Visualizzare lo stato del contributo (disponibile, assegnato, speso)
+- Generare buoni per varie categorie (cinema, musica, ecc.)
+- Visualizzare e gestire la lista dei propri buoni
+- Modificare o consumare buoni non ancora spesi
+- Accedere a uno stato globale del sistema (solo lato client)
 
 ## Componenti del gruppo
 
-* Nome Cognome (Matricola) <email@campus.unimib.it>
-* ...
+* Giulio Bombarda (910090) <g.bombarda2@campus.unimib.it>
+* Matteo Arabelli (909451) <m.arabelli@campus.unimib.it>
+* Christian Canossa (914578) <c.canossa2@campus.unimib.it>
 
 ## Compilazione ed esecuzione
 
