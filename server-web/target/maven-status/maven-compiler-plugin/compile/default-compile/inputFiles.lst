@@ -1,15 +1,15 @@
-/Users/christiancanossa/Documents/Università/Sistemi Distribuiti/ProgettoSD/server-web/src/main/java/it/unimib/sd2025/CorsFilter.java
-/Users/christiancanossa/Documents/Università/Sistemi Distribuiti/ProgettoSD/server-web/src/main/java/it/unimib/sd2025/DatabaseClient/DatabaseClient.java
-/Users/christiancanossa/Documents/Università/Sistemi Distribuiti/ProgettoSD/server-web/src/main/java/it/unimib/sd2025/DatabaseClient/DatabaseClientInterface.java
-/Users/christiancanossa/Documents/Università/Sistemi Distribuiti/ProgettoSD/server-web/src/main/java/it/unimib/sd2025/DatabaseClient/DatabaseController.java
-/Users/christiancanossa/Documents/Università/Sistemi Distribuiti/ProgettoSD/server-web/src/main/java/it/unimib/sd2025/ExampleResource.java
-/Users/christiancanossa/Documents/Università/Sistemi Distribuiti/ProgettoSD/server-web/src/main/java/it/unimib/sd2025/JsonException.java
-/Users/christiancanossa/Documents/Università/Sistemi Distribuiti/ProgettoSD/server-web/src/main/java/it/unimib/sd2025/JsonParsingException.java
-/Users/christiancanossa/Documents/Università/Sistemi Distribuiti/ProgettoSD/server-web/src/main/java/it/unimib/sd2025/UtentiResource.java
-/Users/christiancanossa/Documents/Università/Sistemi Distribuiti/ProgettoSD/server-web/src/main/java/it/unimib/sd2025/model/Buono.java
-/Users/christiancanossa/Documents/Università/Sistemi Distribuiti/ProgettoSD/server-web/src/main/java/it/unimib/sd2025/model/StatisticheSistema.java
-/Users/christiancanossa/Documents/Università/Sistemi Distribuiti/ProgettoSD/server-web/src/main/java/it/unimib/sd2025/model/StatoBuono.java
-/Users/christiancanossa/Documents/Università/Sistemi Distribuiti/ProgettoSD/server-web/src/main/java/it/unimib/sd2025/model/Tipologia.java
-/Users/christiancanossa/Documents/Università/Sistemi Distribuiti/ProgettoSD/server-web/src/main/java/it/unimib/sd2025/model/Utente.java
-/Users/christiancanossa/Documents/Università/Sistemi Distribuiti/ProgettoSD/server-web/src/main/java/it/unimib/sd2025/resource/BuonoRequest.java
-/Users/christiancanossa/Documents/Università/Sistemi Distribuiti/ProgettoSD/server-web/src/main/java/it/unimib/sd2025/resource/UtenteRequest.java
+C:\Users\g.bombarda2\Downloads\progetto_sd\server-web\src\main\java\it\unimib\sd2025\CorsFilter.java
+C:\Users\g.bombarda2\Downloads\progetto_sd\server-web\src\main\java\it\unimib\sd2025\DatabaseClient\DatabaseClient.java
+C:\Users\g.bombarda2\Downloads\progetto_sd\server-web\src\main\java\it\unimib\sd2025\DatabaseClient\DatabaseClientInterface.java
+C:\Users\g.bombarda2\Downloads\progetto_sd\server-web\src\main\java\it\unimib\sd2025\DatabaseClient\DatabaseController.java
+C:\Users\g.bombarda2\Downloads\progetto_sd\server-web\src\main\java\it\unimib\sd2025\ExampleResource.java
+C:\Users\g.bombarda2\Downloads\progetto_sd\server-web\src\main\java\it\unimib\sd2025\JsonException.java
+C:\Users\g.bombarda2\Downloads\progetto_sd\server-web\src\main\java\it\unimib\sd2025\JsonParsingException.java
+C:\Users\g.bombarda2\Downloads\progetto_sd\server-web\src\main\java\it\unimib\sd2025\model\Buono.java
+C:\Users\g.bombarda2\Downloads\progetto_sd\server-web\src\main\java\it\unimib\sd2025\model\StatisticheSistema.java
+C:\Users\g.bombarda2\Downloads\progetto_sd\server-web\src\main\java\it\unimib\sd2025\model\StatoBuono.java
+C:\Users\g.bombarda2\Downloads\progetto_sd\server-web\src\main\java\it\unimib\sd2025\model\Tipologia.java
+C:\Users\g.bombarda2\Downloads\progetto_sd\server-web\src\main\java\it\unimib\sd2025\model\Utente.java
+C:\Users\g.bombarda2\Downloads\progetto_sd\server-web\src\main\java\it\unimib\sd2025\resource\BuonoRequest.java
+C:\Users\g.bombarda2\Downloads\progetto_sd\server-web\src\main\java\it\unimib\sd2025\resource\UtenteRequest.java
+C:\Users\g.bombarda2\Downloads\progetto_sd\server-web\src\main\java\it\unimib\sd2025\UtentiResource.java
