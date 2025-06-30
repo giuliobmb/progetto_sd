@@ -14,6 +14,16 @@ public class Buono {
     public String getId() {
         return id;
     }
+    
+    public Buono(String id, String codiceFiscale, double importo, String tipologia, String dataCreazione, String dataConsumo, StatoBuono stato) {
+        this.id = id;
+        this.codiceFiscale = codiceFiscale;
+        this.importo = importo;
+        this.tipologia = tipologia;
+        this.dataCreazione = dataCreazione;
+        this.dataConsumo = dataConsumo;
+        this.stato = stato;
+    }
     public void setId(String id) {
         this.id = id;
     }

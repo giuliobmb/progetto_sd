@@ -9,11 +9,18 @@ public class Utente {
     public String cognome;
     public String email;
     public String codiceFiscale;
-    public List<Buono> buoni = new ArrayList<>();
+    public String importo;
 
     public Utente() {}
     public String getNome() {
         return nome;
+    }
+
+    public Utente(String nome, String cognome, String email, String codiceFiscale) {
+        this.nome = nome;
+        this.cognome = cognome;
+        this.email = email;
+        this.codiceFiscale = codiceFiscale;
     }
 
     public void setNome(String nome) {
