@@ -30,20 +30,6 @@ public class Main {
         }
     }
 
-    public static void loadContent(){
-        Database db = Database.get();
-        // Creazione schema utenti
-        db.addSchema("utenti");
-        db.addPair("utenti", "RSSMRA80A01H501U", "500");
-        db.addPair("utenti", "VRDLGI85C10Z404Y", "500");
-        db.addPair("utenti", "PLLMHL70T41L219P", "500");
-
-        // Creazione schema buoni
-        db.addSchema("buoni");
-        db.addPair("buoni", "RSSMRA80A01H501U", "20,0");
-        db.addPair("buoni", "VRDLGI85C10Z404Y", "20,1");
-        db.addPair("buoni", "PLLMHL70T41L219P", "50,0");
-    }
 
     /**
      * Handler di una connessione del client.
@@ -71,7 +57,7 @@ public class Main {
                         System.out.println("Sent command: OKEND");
                         break;
                     }
-                    
+
                     String[] command = inputLine.split(" ");
                     switch(command[0]){
                         case "ADDSCHEMA":
@@ -82,7 +68,7 @@ public class Main {
                                 out.println("ERROR");
                                 System.out.println("Sent command: ERROR");
                             }
-                                
+
                             break;
                         case "ADDPAIR":
                             if(db.addPair(command[1], command[2], command[3]) != null){
@@ -92,7 +78,7 @@ public class Main {
                                 out.println("ERROR");
                                 System.out.println("Sent command: ERROR");
                             }
-                                
+
                             break;
                         case "UPDATEPAIR":
                             if(db.updatePair(command[1], command[2], command[3]) != null){
@@ -103,7 +89,7 @@ public class Main {
                                 out.println("ERROR");
                                 System.out.println("Sent command: ERROR");
                             }
-                                
+
                             break;
                         case "REMOVEPAIR":
                             if(db.removePair(command[1], command[2]) != null){
@@ -114,7 +100,7 @@ public class Main {
                                 out.println("ERROR");
                                 System.out.println("Sent command: ERROR");
                             }
-                                break;                    
+                            break;
                         case "GETVALUE":
                             String value = db.getValue(command[1], command[2]);
                             if(value != null){
@@ -157,8 +143,6 @@ public class Main {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-        loadContent();
         startServer();
     }
 }
-

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Utente {
+
     public String nome;
     public String cognome;
     public String email;
@@ -11,4 +12,43 @@ public class Utente {
     public List<Buono> buoni = new ArrayList<>();
 
     public Utente() {}
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCognome() {
+        return cognome;
+    }
+
+    public void setCognome(String cognome) {
+        this.cognome = cognome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCodiceFiscale() {
+        return codiceFiscale;
+    }
+
+    public void setCodiceFiscale(String codiceFiscale) {
+        this.codiceFiscale = codiceFiscale;
+    }
+
+    public List<Buono> getBuoni() {
+        return buoni;
+    }
+
+    public void setBuoni(List<Buono> buoni) {
+        this.buoni = buoni;
+    }
 }

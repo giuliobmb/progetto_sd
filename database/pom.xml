@@ -21,19 +21,13 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Jakarta JSON-B (per serializzazione JSON) -->
-        <dependency>
-            <groupId>jakarta.json.bind</groupId>
-            <artifactId>jakarta.json.bind-api</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-
         <!-- Implementazione JSON-B (es. Eclipse Yasson) -->
         <dependency>
             <groupId>org.eclipse</groupId>
             <artifactId>yasson</artifactId>
             <version>3.0.3</version>
         </dependency>
+
         <dependency>
             <groupId>jakarta.json.bind</groupId>
             <artifactId>jakarta.json.bind-api</artifactId>

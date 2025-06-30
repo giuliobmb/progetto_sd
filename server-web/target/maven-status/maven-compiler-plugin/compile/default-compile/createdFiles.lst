@@ -1,8 +1,7 @@
-it/unimib/sd2025/resource/UtenteResource.class
-it/unimib/sd2025/resource/BuonoResource.class
 it/unimib/sd2025/model/Buono.class
 it/unimib/sd2025/model/StatisticheSistema.class
 it/unimib/sd2025/model/Utente.class
+it/unimib/sd2025/resource/BuonoRequest.class
+it/unimib/sd2025/resource/UtenteRequest.class
 it/unimib/sd2025/model/Tipologia.class
-it/unimib/sd2025/DatabaseClient/TCPClient.class
 it/unimib/sd2025/model/StatoBuono.class
