@@ -3,6 +3,7 @@ package it.unimib.sd2025.resource;
 import it.unimib.sd2025.DatabaseClient.DatabaseController;
 import it.unimib.sd2025.DatabaseClient.DatabaseClient;
 import it.unimib.sd2025.model.Buono;
+import it.unimib.sd2025.model.BuonoRequestPayload;
 import it.unimib.sd2025.model.StatoBuono;
 import it.unimib.sd2025.model.Tipologia;
 import it.unimib.sd2025.model.Utente;
@@ -42,20 +43,20 @@ public class BuonoRequest {
     /**
      * Genera un nuovo buono per un utente.
      *
-     * @param codiceFiscale Codice fiscale dell'utente
-     * @param buono Oggetto buono da creare
+     * @param payload Contiene il codice fiscale e l'importo
      * @return Response con il buono creato o errore
      */
     @POST
-    @Path("/creabuono/{CF}")
-    public Response generaBuono(@PathParam("CF") String codiceFiscale, String importo) {
+    @Path("/creabuono/")
+    public Response generaBuono(BuonoRequestPayload payload) {
         try {
-            // Verifica se l'utente esiste
-            ;
+            String codiceFiscale = payload.getCF();
+            String importo = payload.getImporto();
             
+            // Verifica se l'utente esiste
             Utente utente = dbController.getUtenteByCodiceFiscale(codiceFiscale);
 
-            if (utente.getCodiceFiscale() == null) {
+            if (utente == null) {
                 return Response.status(Response.Status.NOT_FOUND)
                         .entity("{\"error\":\"Utente non trovato\"}")
                         .build();
@@ -64,12 +65,12 @@ public class BuonoRequest {
             double contributoDisponibile = utente.getImporto();
 
             // Verifica se il contributo è sufficiente
-            if (Integer.parseInt(importo) > contributoDisponibile) {
+            if (Double.parseDouble(importo) > contributoDisponibile) {
                 return Response.status(Response.Status.BAD_REQUEST)
                         .entity("{\"error\":\"Contributo insufficiente\"}")
                         .build();
             }
-            
+
             Buono nuovoBuono = new Buono();
 
             // Crea il nuovo buono
@@ -80,15 +81,15 @@ public class BuonoRequest {
             String buonoId = UUID.randomUUID().toString();
             nuovoBuono.setId(buonoId);
 
-            System.out.println(nuovoBuono);
+            // Aggiungere l'importo al buono
+            nuovoBuono.setImporto(Double.parseDouble(importo));
 
             // AGGIORNARE CON IL NUOVO SCHEMA
             dbController.addBuono(nuovoBuono);
 
-
             // Aggiorna il contributo dell'utente
             double nuovoContributo = contributoDisponibile - nuovoBuono.getImporto();
-            dbClient.updatePair("utenti", nuovoBuono.getCodiceFiscale(), String.valueOf(nuovoContributo));
+            dbClient.updatePair("utenti", codiceFiscale, String.valueOf(nuovoContributo));
 
             return Response.status(Response.Status.CREATED)
                     .entity(nuovoBuono)
@@ -96,7 +97,7 @@ public class BuonoRequest {
 
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{\"error\":\"Errore interno del server\"}" + e.getMessage())
+                    .entity("{\"error\":\"Errore interno del server\"} " + e.getMessage())
                     .build();
         }
     }
