@@ -222,7 +222,7 @@ public class BuonoRequest {
      * @param buonoId ID del buono da consumare
      * @return Response di conferma
      */
-    @PUT
+    @GET
     @Path("/consuma/{buonoId}")
     public Response consumaBuono(@PathParam("buonoId") String buonoId) {
         try {
@@ -262,8 +262,8 @@ public class BuonoRequest {
      * @param buonoId ID del buono da cancellare
      * @return Response di conferma
      */
-    @DELETE
-    @Path("/{buonoId}")
+    @GET
+    @Path("/cancella/{buonoId}")
     public Response cancellaBuono(@PathParam("buonoId") String buonoId) {
         try {
             Buono buono = dbController.getBuonoById(buonoId);
