@@ -1,6 +1,7 @@
 package it.unimib.sd2025.resource;
 
 import it.unimib.sd2025.DatabaseClient.DatabaseClient;
+import it.unimib.sd2025.DatabaseClient.DatabaseController;
 import it.unimib.sd2025.model.Buono;
 import it.unimib.sd2025.model.Utente;
 import jakarta.json.bind.Jsonb;
@@ -10,6 +11,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,11 +27,13 @@ public class UtenteRequest {
     private DatabaseClient dbClient;
     private Jsonb jsonb;
     private static final double CONTRIBUTO_INIZIALE = 500.0;
+    private DatabaseController db;
 
     public UtenteRequest() {
         try {
             this.dbClient = new DatabaseClient();
             this.jsonb = JsonbBuilder.create();
+            db = DatabaseController.get();
         } catch (IOException e) {
             System.err.println("Errore nell'inizializzazione del client database: " + e.getMessage());
         }
@@ -41,33 +45,31 @@ public class UtenteRequest {
      * @param utente Oggetto utente da registrare
      * @return Response con l'utente registrato o errore
      */
+    
     @POST
     @Path("/registrazione")
     public Response registraUtente(Utente utente) {
+
         try {
             // Verifica se l'utente esiste già
-            String contributoEsistente = dbClient.getValue("utenti", utente.getCodiceFiscale());
-            if (contributoEsistente != null) {
+            Utente test = db.getUtenteByCodiceFiscale(utente.getCodiceFiscale());
+            if (test != null) {
                 return Response.status(Response.Status.CONFLICT)
                         .entity("{\"error\":\"Utente già registrato\"}")
                         .build();
             }
 
             // Registra l'utente con il contributo iniziale
-            dbClient.addPair("utenti", utente.getCodiceFiscale(), String.valueOf(CONTRIBUTO_INIZIALE));
-
-            // Salva i dettagli dell'utente in uno schema separato
-            String utenteJson = jsonb.toJson(utente);
-            dbClient.addSchema("dettagli_utenti");
-            dbClient.addPair("dettagli_utenti", utente.getCodiceFiscale(), utenteJson);
+            db.addUtente(utente);
 
             return Response.status(Response.Status.CREATED)
-                    .entity(utente)
+                    .entity(utente)  // Restituisce l'utente registrato
                     .build();
 
         } catch (Exception e) {
+            // Gestione dell'errore
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{\"error\":\"Errore interno del server\"}")
+                    .entity("{\"error\":\"Errore interno del server\"}" + e.getMessage())
                     .build();
         }
     }
@@ -82,14 +84,13 @@ public class UtenteRequest {
     @Path("/{codiceFiscale}")
     public Response getUtente(@PathParam("codiceFiscale") String codiceFiscale) {
         try {
-            String utenteJson = dbClient.getValue("dettagli_utenti", codiceFiscale);
-            if (utenteJson == null) {
-                return Response.status(Response.Status.NOT_FOUND)
-                        .entity("{\"error\":\"Utente non trovato\"}")
-                        .build();
+            Utente utente = db.getUtenteByCodiceFiscale(codiceFiscale);
+            System.out.println(utente.toString());
+            if (utente == null) {
+                return Response.status(Response.Status.NOT_FOUND).entity("{\"error\":\"Utente non trovato\"}").build();
             }
 
-            Utente utente = jsonb.fromJson(utenteJson, Utente.class);
+           
             return Response.ok(utente).build();
 
         } catch (Exception e) {
@@ -111,32 +112,21 @@ public class UtenteRequest {
     public Response getStatoContributo(@PathParam("codiceFiscale") String codiceFiscale) {
         try {
             // Verifica se l'utente esiste
-            String contributoStr = dbClient.getValue("utenti", codiceFiscale);
-            if (contributoStr == null) {
+            Utente utente = db.getUtenteByCodiceFiscale(codiceFiscale);
+            if (utente == null) {
                 return Response.status(Response.Status.NOT_FOUND)
                         .entity("{\"error\":\"Utente non trovato\"}")
                         .build();
             }
 
-            double contributoDisponibile = Double.parseDouble(contributoStr);
+            double contributoDisponibile = utente.getImporto();
 
             // Calcola contributo assegnato ai buoni e speso
-            HashMap<String, String> tuttiBuoni = dbClient.getAll("buoni");
+            ArrayList<Buono> buoni = (ArrayList<Buono>) db.getAllBuoniUtente(codiceFiscale);
             double contributoAssegnato = 0.0;
             double contributoSpeso = 0.0;
 
-            if (tuttiBuoni != null) {
-                for (String buonoJson : tuttiBuoni.values()) {
-                    Buono buono = jsonb.fromJson(buonoJson, Buono.class);
-                    if (codiceFiscale.equals(buono.getCodiceFiscale())) {
-                        if (buono.isConsumato()) {
-                            contributoSpeso += buono.getImporto();
-                        } else {
-                            contributoAssegnato += buono.getImporto();
-                        }
-                    }
-                }
-            }
+            
 
             Map<String, Double> statoContributo = Map.of(
                     "contributoDisponibile", contributoDisponibile,
@@ -239,49 +229,26 @@ public class UtenteRequest {
      * @return Response con la lista degli utenti
      */
     @GET
+    @Path("/mostratutti")
     public Response getTuttiUtenti() {
+
         try {
-            HashMap<String, String> tuttiUtenti = dbClient.getAll("dettagli_utenti");
+            ArrayList<Utente> tuttiUtenti = (ArrayList<Utente>) db.getAllUtenti();
 
             if (tuttiUtenti == null || tuttiUtenti.isEmpty()) {
                 return Response.ok("[]").build();
             }
 
-            java.util.List<Utente> listaUtenti = new java.util.ArrayList<>();
-            for (String utenteJson : tuttiUtenti.values()) {
-                Utente utente = jsonb.fromJson(utenteJson, Utente.class);
-                listaUtenti.add(utente);
-            }
+            
 
-            return Response.ok(listaUtenti).build();
+            return Response.ok(tuttiUtenti).build();
 
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{\"error\":\"Errore interno del server\"}")
+                    .entity("{\"error\":\"Errore interno del server\"}" + e.getMessage())
                     .build();
         }
     }
 
-    /**
-     * Verifica se un utente esiste nel sistema.
-     *
-     * @param codiceFiscale Codice fiscale dell'utente
-     * @return Response di conferma esistenza
-     */
-    @GET
-    @Path("/{codiceFiscale}/exists")
-    public Response verificaEsistenzaUtente(@PathParam("codiceFiscale") String codiceFiscale) {
-        try {
-            String contributoStr = dbClient.getValue("utenti", codiceFiscale);
-            boolean esiste = (contributoStr != null);
 
-            Map<String, Boolean> risposta = Map.of("esiste", esiste);
-            return Response.ok(risposta).build();
-
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{\"error\":\"Errore interno del server\"}")
-                    .build();
-        }
-    }
 }

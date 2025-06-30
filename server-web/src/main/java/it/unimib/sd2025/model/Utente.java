@@ -11,7 +11,9 @@ public class Utente {
     public String codiceFiscale;
     public double importo;
 
+
     public Utente() {}
+    
     public String getNome() {
         return nome;
     }
