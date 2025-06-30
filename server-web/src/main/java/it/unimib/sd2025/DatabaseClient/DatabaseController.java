@@ -97,27 +97,60 @@ public class DatabaseController{
         return buoniList;
     }
 
+    public void addUtente(Utente utente) {
+        // Implementazione per aggiungere un utente
+        Jsonb jsonb = JsonbBuilder.create();
+        String utenteString = jsonb.toJson(utente);
+        client.addPair("utenti", utente.getCodiceFiscale(), utenteString);
+    }
+
+    public Utente getUtenteByCodiceFiscale(String codiceFiscale) {
+        // Implementazione per ottenere un utente per codice fiscale
+        String utenteString = client.getValue("utenti", codiceFiscale);
+        if (utenteString != null) {
+            Jsonb jsonb = JsonbBuilder.create();
+            return jsonb.fromJson(utenteString, Utente.class);
+        }
+        return null;
+    }
+
+    public List<Utente> getAllUtenti() {
+        // Implementazione per ottenere tutti gli utenti
+        List<Utente> utentiList = new ArrayList<>();
+
+        HashMap<String,String> Allutenti = client.getAll("utenti");
+
+        for(String key : Allutenti.keySet()) {
+            String utenteString = Allutenti.get(key);
+            Jsonb jsonb = JsonbBuilder.create();
+            Utente utente = jsonb.fromJson(utenteString, Utente.class);
+            utentiList.add(utente);
+        }
+        return utentiList;
+    }
+    
     public void popolaDatabase() {
         Random random = new Random();
 
         // Creiamo 10 utenti casuali
         for (int i = 1; i <= 10; i++) {
+            // Generazione casuale degli attributi dell'utente
             String codiceFiscale = "CF" + String.format("%05d", i); // "CF00001", "CF00002", ...
-            String nome = "Nome" + i; // Genera un nome casuale (Nome1, Nome2, ...)
-            String cognome = "Cognome" + i; // Genera un cognome casuale
-            String email = "email" + i + "@example.com"; // Genera un'email casuale
+            String nome = "Nome" + i;
+            String cognome = "Cognome" + i;
+            String email = "email" + i + "@example.com";
 
-            // Crea un nuovo utente con nome, cognome, email e codice fiscale
+            // Creazione dell'utente
             Utente utente = new Utente(nome, cognome, email, codiceFiscale);
 
-            // Aggiungi l'utente al database
-            client.addPair("utenti", codiceFiscale, codiceFiscale);  // Ad esempio, associando il codice fiscale come chiave e valore
-
+            // Aggiungiamo l'utente al database
+            addUtente(utente);
             System.out.println("Aggiungendo utente con codice fiscale: " + codiceFiscale);
 
             // Creiamo tra 1 e 3 buoni per ogni utente
             int numBuoni = random.nextInt(3) + 1; // Genera 1, 2 o 3 buoni
             for (int j = 1; j <= numBuoni; j++) {
+                // Generazione di attributi casuali per ogni buono
                 String idBuono = String.format("%03d", random.nextInt(1000)); // ID buono casuale
                 double importo = (random.nextInt(100) + 1) * 10.0; // Importo casuale tra 10 e 1000
                 String tipologia = random.nextBoolean() ? "Sconto" : "Promozione";
@@ -125,11 +158,14 @@ public class DatabaseController{
                 String dataConsumo = random.nextBoolean() ? "2025-07-" + (random.nextInt(30) + 1) : null;
                 StatoBuono stato = random.nextBoolean() ? StatoBuono.CONSUMATO : StatoBuono.NON_CONSUMATO;
 
+                // Creazione del buono
                 Buono buono = new Buono(idBuono, codiceFiscale, importo, tipologia, dataCreazione, dataConsumo, stato);
+                // Aggiungiamo il buono al database
                 addBuono(buono);
                 System.out.println("Aggiungendo buono con ID: " + idBuono + " per l'utente: " + codiceFiscale);
             }
         }
     }
+
 }
 

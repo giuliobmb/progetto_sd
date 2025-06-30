@@ -21,6 +21,7 @@ public class Utente {
         this.cognome = cognome;
         this.email = email;
         this.codiceFiscale = codiceFiscale;
+        this.importo = "500";
     }
 
     public void setNome(String nome) {
