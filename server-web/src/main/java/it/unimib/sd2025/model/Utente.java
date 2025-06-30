@@ -51,12 +51,4 @@ public class Utente {
     public void setCodiceFiscale(String codiceFiscale) {
         this.codiceFiscale = codiceFiscale;
     }
-
-    public List<Buono> getBuoni() {
-        return buoni;
-    }
-
-    public void setBuoni(List<Buono> buoni) {
-        this.buoni = buoni;
-    }
 }
