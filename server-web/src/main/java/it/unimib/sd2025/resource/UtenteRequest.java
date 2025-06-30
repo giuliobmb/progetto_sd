@@ -126,10 +126,16 @@ public class UtenteRequest {
             double contributoAssegnato = 0.0;
             double contributoSpeso = 0.0;
 
-            
+            for (Buono buono : buoni) {
+                if (buono.isConsumato()) {
+                    contributoSpeso += buono.getImporto();
+                } else {
+                    contributoAssegnato += buono.getImporto();
+                }
+            }            
 
             Map<String, Double> statoContributo = Map.of(
-                    "contributoDisponibile", contributoDisponibile,
+                    "contributoDisponibile", CONTRIBUTO_INIZIALE - contributoDisponibile,
                     "contributoAssegnato", contributoAssegnato,
                     "contributoSpeso", contributoSpeso,
                     "contributoTotale", CONTRIBUTO_INIZIALE
