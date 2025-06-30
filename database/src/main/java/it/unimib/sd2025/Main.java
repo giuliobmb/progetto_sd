@@ -30,21 +30,6 @@ public class Main {
         }
     }
 
-    public static void loadContent(){
-        Database db = Database.get();
-        // Creazione schema utenti
-        db.addSchema("utenti");
-        db.addPair("utenti", "RSSMRA80A01H501U", "500");
-        db.addPair("utenti", "VRDLGI85C10Z404Y", "500");
-        db.addPair("utenti", "PLLMHL70T41L219P", "500");
-
-        // Creazione schema buoni
-        db.addSchema("buoni");
-        db.addPair("buoni", "RSSMRA80A01H501U", "20");
-        db.addPair("buoni", "VRDLGI85C10Z404Y", "20");
-        db.addPair("buoni", "PLLMHL70T41L219P", "50");
-    }
-
     /**
      * Handler di una connessione del client.
      */
@@ -157,7 +142,6 @@ public class Main {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-        loadContent();
         startServer();
     }
 }
