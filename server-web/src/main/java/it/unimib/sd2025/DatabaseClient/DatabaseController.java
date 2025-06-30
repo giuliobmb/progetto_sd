@@ -104,6 +104,13 @@ public class DatabaseController{
         client.addPair("utenti", utente.getCodiceFiscale(), utenteString);
     }
 
+    public void updateUtente(Utente utente){ 
+        // Implementazione per aggiornare un utente
+        Jsonb jsonb = JsonbBuilder.create();
+        String UtenteString = jsonb.toJson(utente);
+        client.updatePair("utenti", utente.getCodiceFiscale(), UtenteString);
+    }
+
     public Utente getUtenteByCodiceFiscale(String codiceFiscale) {
         // Implementazione per ottenere un utente per codice fiscale
         String utenteString = client.getValue("utenti", codiceFiscale);
@@ -128,6 +135,8 @@ public class DatabaseController{
         }
         return utentiList;
     }
+
+
 
     public void popolaDatabase() {
         Random random = new Random();

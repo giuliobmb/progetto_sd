@@ -224,10 +224,11 @@ public class BuonoRequest {
             }
 
             // Riaccredita il contributo all'utente
-            String contributoStr = dbClient.getValue("utenti", buono.getCodiceFiscale());
-            double contributoAttuale = Double.parseDouble(contributoStr);
+            Utente utente = dbController.getUtenteByCodiceFiscale(buono.getCodiceFiscale());
+            double contributoAttuale = utente.importo;
             double nuovoContributo = contributoAttuale + buono.getImporto();
-            dbClient.updatePair("utenti", buono.getCodiceFiscale(), String.valueOf(nuovoContributo));
+            utente.setImporto(nuovoContributo);
+            dbController.updateUtente(utente);
 
             dbController.removeBuono(buono);
 
