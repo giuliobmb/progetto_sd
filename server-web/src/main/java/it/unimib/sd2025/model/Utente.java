@@ -8,6 +8,10 @@ public class Utente {
         this.codiceFiscale = codiceFiscale;
     }
 
+    public Utente() {
+        // Costruttore vuoto per la serializzazione/deserializzazione
+    }
+
     public String getCodiceFiscale() {
         return codiceFiscale;
     }

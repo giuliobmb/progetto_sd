@@ -19,6 +19,10 @@ public class Buono {
         this.dataConsumo = dataConsumo;
         this.stato = stato;
     }
+
+    public Buono() {
+        // Costruttore vuoto per la serializzazione/deserializzazione
+    }
     
     public String getIdBuono() {
         return idBuono;

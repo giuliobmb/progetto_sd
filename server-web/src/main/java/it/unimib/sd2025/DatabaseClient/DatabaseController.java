@@ -54,14 +54,14 @@ public class DatabaseController{
         String BuonoString = jsonb.toJson(buono);
         client.updatePair("buoni", buono.getIdBuono(), BuonoString);
     }
-    public List<Buono> getBuoni(Utente utente){
+    public List<Buono> getAllBuoni(String codiceFiscale){
         // Implementazione per ottenere i buoni di un utente
         List<Buono> buoniList = new ArrayList<>();
 
         HashMap<String,String> Allbuoni = client.getAll("haBuono");
 
         for(String key : Allbuoni.keySet()) {
-            if(Allbuoni.get(key).equals(utente.getCodiceFiscale())) {
+            if(Allbuoni.get(key).equals(codiceFiscale)) {
                 String buonoString = client.getValue("buoni", key);
                 Jsonb jsonb = JsonbBuilder.create();
                 Buono buono = jsonb.fromJson(buonoString, Buono.class);
@@ -69,6 +69,16 @@ public class DatabaseController{
             }
         }
         return buoniList;
+    }
+
+    public Buono getBuonoById(String idBuono) {
+        // Implementazione per ottenere un buono specifico per ID
+        String buonoString = client.getValue("buoni", idBuono);
+        if (buonoString != null) {
+            Jsonb jsonb = JsonbBuilder.create();
+            return jsonb.fromJson(buonoString, Buono.class);
+        }
+        return null;
     }
     
 }
