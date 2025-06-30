@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
+import it.unimib.sd2025.model.SystemStatus;
 import jakarta.json.JsonException;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
@@ -30,16 +31,9 @@ public class SystemResource {
     @Path("/status")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getStatus() {
-        // Logica per ottenere lo stato del sistema
         SystemStatus status = new SystemStatus();
-        status.setStatus("OK");
-        status.setMessage("System is running smoothly.");
-        status.setTimestamp(new Date().toString());
-
-        // Usa JsonbBuilder per convertire l'oggetto in JSON
-        Jsonb jsonb = JsonbBuilder.create();
-        String jsonResponse = jsonb.toJson(status);
-
-        return jsonb;
+        // Here you would typically gather the actual system status
+        // For now, we return an empty status object
+        return Response.ok(status).build();
     }
 }
