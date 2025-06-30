@@ -47,15 +47,15 @@ public class BuonoRequest {
      * @return Response con il buono creato o errore
      */
     @POST
-    @Path("/creabuono")
-    public Response generaBuono(Buono buono) {
+    @Path("/creabuono/{CF}")
+    public Response generaBuono(@PathParam("CF") String codiceFiscale, String importo) {
         try {
             // Verifica se l'utente esiste
-            System.out.println(buono);
-            String utenteString = dbClient.getValue("utenti", buono.getCodiceFiscale());
-            Utente utente = jsonb.fromJson(utenteString, Utente.class);
+            ;
+            
+            Utente utente = dbController.getUtenteByCodiceFiscale(codiceFiscale);
 
-            if (utente.getNome() == null) {
+            if (utente.getCodiceFiscale() == null) {
                 return Response.status(Response.Status.NOT_FOUND)
                         .entity("{\"error\":\"Utente non trovato\"}")
                         .build();
@@ -64,33 +64,34 @@ public class BuonoRequest {
             double contributoDisponibile = utente.getImporto();
 
             // Verifica se il contributo è sufficiente
-            if (buono.getImporto() > contributoDisponibile) {
+            if (Integer.parseInt(importo) > contributoDisponibile) {
                 return Response.status(Response.Status.BAD_REQUEST)
                         .entity("{\"error\":\"Contributo insufficiente\"}")
                         .build();
             }
-
+            
+            Buono nuovoBuono = new Buono();
 
             // Crea il nuovo buono
             DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
-            buono.setDataCreazione(LocalDateTime.now().format(formatter));
-            buono.setDataConsumo(null); // Inizialmente non consumato
-            buono.setStato(StatoBuono.NON_CONSUMATO);
+            nuovoBuono.setDataCreazione(LocalDateTime.now().format(formatter));
+            nuovoBuono.setDataConsumo(null); // Inizialmente non consumato
+            nuovoBuono.setStato(StatoBuono.NON_CONSUMATO);
             String buonoId = UUID.randomUUID().toString();
-            buono.setId(buonoId);
+            nuovoBuono.setId(buonoId);
 
-            System.out.println(buono);
+            System.out.println(nuovoBuono);
 
             // AGGIORNARE CON IL NUOVO SCHEMA
-            dbController.addBuono(buono);
+            dbController.addBuono(nuovoBuono);
 
 
             // Aggiorna il contributo dell'utente
-            double nuovoContributo = contributoDisponibile - buono.getImporto();
-            dbClient.updatePair("utenti", buono.getCodiceFiscale(), String.valueOf(nuovoContributo));
+            double nuovoContributo = contributoDisponibile - nuovoBuono.getImporto();
+            dbClient.updatePair("utenti", nuovoBuono.getCodiceFiscale(), String.valueOf(nuovoContributo));
 
             return Response.status(Response.Status.CREATED)
-                    .entity(buono)
+                    .entity(nuovoBuono)
                     .build();
 
         } catch (Exception e) {
