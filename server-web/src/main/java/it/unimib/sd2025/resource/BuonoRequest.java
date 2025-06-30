@@ -4,6 +4,8 @@ import it.unimib.sd2025.DatabaseClient.DatabaseController;
 import it.unimib.sd2025.DatabaseClient.DatabaseClient;
 import it.unimib.sd2025.model.Buono;
 import it.unimib.sd2025.model.StatoBuono;
+import it.unimib.sd2025.model.Tipologia;
+import it.unimib.sd2025.model.Utente;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.ws.rs.*;
@@ -30,6 +32,7 @@ public class BuonoRequest {
     public BuonoRequest() {
         try {
             this.dbClient = new DatabaseClient();
+            this.dbController = DatabaseController.get();
             this.jsonb = JsonbBuilder.create();
         } catch (IOException e) {
             System.err.println("Errore nell'inizializzazione del client database: " + e.getMessage());
@@ -44,18 +47,21 @@ public class BuonoRequest {
      * @return Response con il buono creato o errore
      */
     @POST
-    @Path("/{codiceFiscale}")
-    public Response generaBuono(@PathParam("codiceFiscale") String codiceFiscale, Buono buono) {
+    @Path("/creabuono")
+    public Response generaBuono(Buono buono) {
         try {
             // Verifica se l'utente esiste
-            String contributoStr = dbClient.getValue("utenti", codiceFiscale);
-            if (contributoStr == null) {
+            System.out.println(buono);
+            String utenteString = dbClient.getValue("utenti", buono.getCodiceFiscale());
+            Utente utente = jsonb.fromJson(utenteString, Utente.class);
+
+            if (utente.getNome() == null) {
                 return Response.status(Response.Status.NOT_FOUND)
                         .entity("{\"error\":\"Utente non trovato\"}")
                         .build();
             }
 
-            double contributoDisponibile = Double.parseDouble(contributoStr);
+            double contributoDisponibile = utente.getImporto();
 
             // Verifica se il contributo è sufficiente
             if (buono.getImporto() > contributoDisponibile) {
@@ -64,12 +70,16 @@ public class BuonoRequest {
                         .build();
             }
 
-            // Genera ID univoco per il buono
+
+            // Crea il nuovo buono
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+            buono.setDataCreazione(LocalDateTime.now().format(formatter));
+            buono.setDataConsumo(null); // Inizialmente non consumato
+            buono.setStato(StatoBuono.NON_CONSUMATO);
             String buonoId = UUID.randomUUID().toString();
             buono.setId(buonoId);
-            buono.setCodiceFiscale(codiceFiscale);
-            buono.setDataCreazione(LocalDateTime.now().toString());
-            buono.setStato(StatoBuono.NON_CONSUMATO);
+
+            System.out.println(buono);
 
             // AGGIORNARE CON IL NUOVO SCHEMA
             dbController.addBuono(buono);
@@ -77,7 +87,7 @@ public class BuonoRequest {
 
             // Aggiorna il contributo dell'utente
             double nuovoContributo = contributoDisponibile - buono.getImporto();
-            dbClient.updatePair("utenti", codiceFiscale, String.valueOf(nuovoContributo));
+            dbClient.updatePair("utenti", buono.getCodiceFiscale(), String.valueOf(nuovoContributo));
 
             return Response.status(Response.Status.CREATED)
                     .entity(buono)
@@ -85,7 +95,7 @@ public class BuonoRequest {
 
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{\"error\":\"Errore interno del server\"}")
+                    .entity("{\"error\":\"Errore interno del server\"}" + e.getMessage())
                     .build();
         }
     }
@@ -111,15 +121,6 @@ public class BuonoRequest {
             // Ottieni tutti i buoni
             List<Buono> buoniUtente = new ArrayList<>();
             buoniUtente = dbController.getAllBuoniUtente(codiceFiscale);
-
-            if (buoniUtente != null) {
-                buoniUtente.sort((b1, b2) -> {
-                    DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE; // adatta il pattern al tuo formato
-                    LocalDateTime data1 = LocalDateTime.parse(b1.getDataCreazione(), formatter);
-                    LocalDateTime data2 = LocalDateTime.parse(b2.getDataCreazione(), formatter);
-                    return data2.compareTo(data1); // ordina dal più recente al più vecchio
-                });
-            }
 
             // Ordina per data di creazione (cronologico)
 
@@ -337,4 +338,38 @@ public class BuonoRequest {
                     .build();
         }
     }
+
+    @GET
+    @Path("/popola")
+    public Response popolazione(){
+        try {
+            dbController.popolaDatabase();
+            return Response.ok(dbController.getAllBuoni()).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"error\":\"Errore interno del server\"}")
+                    .build();
+        }
+    }
+
+    @GET
+    @Path("/mostratutti")
+    public Response mostratuttiBuoni(){
+        try {
+            List<Buono> buoni = dbController.getAllBuoni();
+            if (buoni.isEmpty()) {
+                return Response.status(Response.Status.NOT_FOUND)
+                        .entity("{\"error\":\"Nessun buono trovato\"}")
+                        .build();
+            }
+            return Response.ok(buoni).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"error\":\"Errore interno del server\"}")
+                    .build();
+        }
+    }
+
+
+
 }

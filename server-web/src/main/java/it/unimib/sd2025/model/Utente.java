@@ -9,7 +9,7 @@ public class Utente {
     public String cognome;
     public String email;
     public String codiceFiscale;
-    public String importo;
+    public double importo;
 
     public Utente() {}
     public String getNome() {
@@ -21,7 +21,7 @@ public class Utente {
         this.cognome = cognome;
         this.email = email;
         this.codiceFiscale = codiceFiscale;
-        this.importo = "500";
+        this.importo = 500;
     }
 
     public void setNome(String nome) {
@@ -50,5 +50,11 @@ public class Utente {
 
     public void setCodiceFiscale(String codiceFiscale) {
         this.codiceFiscale = codiceFiscale;
+    }
+    public double getImporto() {
+        return importo;
+    }
+    public void setImporto(double importo) {
+        this.importo = importo;
     }
 }

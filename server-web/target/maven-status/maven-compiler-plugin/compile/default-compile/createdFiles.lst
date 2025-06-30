@@ -1,4 +1,11 @@
+it/unimib/sd2025/CorsFilter.class
+it/unimib/sd2025/JsonParsingException.class
+it/unimib/sd2025/DatabaseClient/DatabaseClient.class
 it/unimib/sd2025/model/Buono.class
+it/unimib/sd2025/DatabaseClient/DatabaseController.class
+it/unimib/sd2025/ExampleResource.class
+it/unimib/sd2025/DatabaseClient/DatabaseClientInterface.class
+it/unimib/sd2025/JsonException.class
 it/unimib/sd2025/model/StatisticheSistema.class
 it/unimib/sd2025/model/Utente.class
 it/unimib/sd2025/resource/BuonoRequest.class
