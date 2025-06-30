@@ -5,7 +5,7 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-import it.unimib.sd2025.model.User;
+import it.unimib.sd2025.model.Utente;
 import jakarta.json.JsonException;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.JsonbException;
@@ -29,7 +29,7 @@ public class UserResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createUser(User user) {
+    public Response createUser(Utente user) {
         // Logica per creare un utente
         return Response.status(Status.CREATED).entity(user).build();
     }

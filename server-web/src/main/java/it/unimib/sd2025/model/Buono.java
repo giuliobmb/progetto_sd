@@ -8,6 +8,17 @@ public class Buono {
     private String dataCreazione;
     private String dataConsumo;
     private String stato;
+
+    public Buono(String idBuono, String codiceFiscale, double importo, String tipologia, String dataCreazione,
+            String dataConsumo, String stato) {
+        this.idBuono = idBuono;
+        this.codiceFiscale = codiceFiscale;
+        this.importo = importo;
+        this.tipologia = tipologia;
+        this.dataCreazione = dataCreazione;
+        this.dataConsumo = dataConsumo;
+        this.stato = stato;
+    }
     
     public String getIdBuono() {
         return idBuono;
