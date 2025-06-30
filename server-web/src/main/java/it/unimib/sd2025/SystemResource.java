@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import jakarta.json.JsonException;
+import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.JsonbException;
 import jakarta.ws.rs.Consumes;
@@ -30,6 +31,15 @@ public class SystemResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getStatus() {
         // Logica per ottenere lo stato del sistema
-        return Response.ok().build();
+        SystemStatus status = new SystemStatus();
+        status.setStatus("OK");
+        status.setMessage("System is running smoothly.");
+        status.setTimestamp(new Date().toString());
+
+        // Usa JsonbBuilder per convertire l'oggetto in JSON
+        Jsonb jsonb = JsonbBuilder.create();
+        String jsonResponse = jsonb.toJson(status);
+
+        return jsonb;
     }
 }

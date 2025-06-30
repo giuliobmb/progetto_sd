@@ -1,4 +1,4 @@
 it\unimib\sd2025\JsonException.class
-it\unimib\sd2025\JsonParsingException.class
 it\unimib\sd2025\CorsFilter.class
 it\unimib\sd2025\ExampleResource.class
+it\unimib\sd2025\JsonParsingException.class
