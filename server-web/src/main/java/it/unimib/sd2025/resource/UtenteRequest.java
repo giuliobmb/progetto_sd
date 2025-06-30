@@ -42,6 +42,7 @@ public class UtenteRequest {
      * @return Response con l'utente registrato o errore
      */
     @POST
+    @Path("/registrazione")
     public Response registraUtente(Utente utente) {
         try {
             // Verifica se l'utente esiste già
